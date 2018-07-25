@@ -1,0 +1,3 @@
+data/
+src/vggish_model.ckpt
+src/vggish_pca_params.npz
