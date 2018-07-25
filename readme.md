@@ -4,7 +4,7 @@
 Forked from: https://github.com/tensorflow/models/tree/master/research/audioset
 
 Running this ([pipenv](https://github.com/pypa/pipenv) required)
-```console
+```bash
 pipenv install
 sh download_and_test.sh
 ```
