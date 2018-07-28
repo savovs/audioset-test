@@ -9,5 +9,9 @@ scipy = "*"
 resampy = "*"
 tensorflow = "*"
 six = "*"
+matplotlib = "*"
+pysoundfile = "*"
 
 [dev-packages]
+pylint = "*"
+"autopep8" = "*"

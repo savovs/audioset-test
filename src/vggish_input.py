@@ -67,6 +67,7 @@ def waveform_to_examples(data, sample_rate):
       log_mel,
       window_length=example_window_length,
       hop_length=example_hop_length)
+
   return log_mel_examples
 
 

@@ -1,3 +1,8 @@
-data/
+data/*
+!data/audio/
+
+images/*
 src/vggish_model.ckpt
 src/vggish_pca_params.npz
+
+.vscode/
