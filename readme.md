@@ -1,5 +1,5 @@
 # AudioSet Test
-## Everything needed to test Google's [AudioSet](https://research.google.com/audioset/) VGGish model.
+## Generate bounding boxes around sounds in a log mel spectrogram and test Google's [AudioSet](https://research.google.com/audioset/) VGGish model 
 
 Forked from: https://github.com/tensorflow/models/tree/master/research/audioset
 
