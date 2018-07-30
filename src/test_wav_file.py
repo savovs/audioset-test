@@ -1,5 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
+from scipy.cluster.vq import kmeans, vq
 import soundfile as sf
 
 import vggish_input
@@ -47,3 +48,7 @@ def plot(data, name='test.png', content_only=False, show=False):
         plt.show()
 
 plot(np.rot90(input_batch[0]))
+
+
+centroids, _ = kmeans(input_batch[0], 4)
+# plt.plot(centroids[:,0], centroids[:,1], 'sg', markersize=8)
