@@ -10,7 +10,6 @@ import vggish_input
 import vggish_params
 
 PLOT_CONTENT_ONLY = True
-PLOT_DECISION_BOUNDARIES = False
 PLOT_SPECTROGRAM = False
 
 plt.rcParams['figure.dpi'] = 300
@@ -36,38 +35,19 @@ data = input_batch[0]
 reduced_data = PCA(n_components=2).fit_transform(data)
 kmeans = KMeans(random_state=0).fit(reduced_data)
 
-# Plotting
-# Step size of the mesh. Decrease to increase the quality of the VQ.
-h = .02     # point in the mesh [x_min, x_max]x[y_min, y_max].
-
 # Plot the decision boundary. For that, we will assign a color to each
-x_min, x_max = reduced_data[:, 0].min() - 1, reduced_data[:, 0].max() + 1
-y_min, y_max = reduced_data[:, 1].min() - 1, reduced_data[:, 1].max() + 1
-
-
-fig, ax = plt.subplots()
-
-if PLOT_DECISION_BOUNDARIES:
-    xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
-                         np.arange(y_min, y_max, h))
-
-    # Obtain labels for each point in mesh. Use last trained model.
-    Z = kmeans.predict(np.c_[xx.ravel(), yy.ravel()])
-
-    # Put the result into a color plot
-    Z = Z.reshape(xx.shape)
-    # plt.figure(1)
-    plt.clf()
-    plt.imshow(Z, interpolation='nearest',
-               extent=(xx.min(), xx.max(), yy.min(), yy.max()),
-               cmap=plt.cm.Paired,
-               aspect='auto', origin='lower', alpha=.3)
+x_min, x_max = reduced_data[:, 0].min(), reduced_data[:, 0].max()
+y_min, y_max = reduced_data[:, 1].min(), reduced_data[:, 1].max()
 
 x_data_mapped = np.interp(reduced_data[:, 0], [x_min, x_max], [0, 1])
 y_data_mapped = np.interp(reduced_data[:, 1], [y_min, y_max], [0, 1])
 
-data_colors = kmeans.labels_.astype(float)
+print('Mapped reduced data: ', x_data_mapped, y_data_mapped)
 
+# Plot Reduced Data Points
+fig, ax = plt.subplots()
+
+data_colors = kmeans.labels_.astype(float)
 plt.scatter(x_data_mapped, y_data_mapped,
             c=data_colors, alpha=0.3)
 
@@ -114,15 +94,21 @@ save_figure('spectrogram_clustering.png')
 
 # Get box width and height
 unique_labels = np.unique(kmeans.labels_)
-print('\nAll labels: {}\n'.format(kmeans.labels_))
-print(centroids_mapped)
+print('\Labels length: {}, all labels {}\n'.format(len(kmeans.labels_), kmeans.labels_))
+print('Length of reduced data: {}\n'.format(len(reduced_data)))
+print('Centroids mapped: ', centroids_mapped)
 
 bounding_boxes = []
 
 for unique_label_index, label in enumerate(unique_labels):
     # Get indexes of data
-    indexes = [index for index, number in enumerate(
-        kmeans.labels_) if number == label]
+    indexes = [] 
+    
+    for index, number in enumerate(kmeans.labels_):
+        if number == label:
+            indexes.append(index)
+
+    print('Label: {}, indexes: {}'.format(label, indexes))
 
     x_data_matching_label = x_data_mapped[indexes]
     y_data_matching_label = y_data_mapped[indexes]
@@ -139,7 +125,7 @@ for unique_label_index, label in enumerate(unique_labels):
     # cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (255,0,0), 2)
 
     bounding_boxes.append({'height': height, 'width': width})
-    print('\nLabel: {}, width: {}, height: {}\n'.format(label, width, height))
+    print('\nWidth: {}, height: {}\n'.format(label, width, height))
 
 
 for index, centroid in enumerate(centroids_mapped):
@@ -195,5 +181,5 @@ if PLOT_CONTENT_ONLY:
 
     # extent = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
     plt.imshow(image)
-    plt.show()
+    # plt.show()
     # plt.imsave("../images/boxes.png", image)
