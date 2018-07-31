@@ -12,6 +12,7 @@ six = "*"
 matplotlib = "*"
 pysoundfile = "*"
 sklearn = "*"
+opencv-python = "*"
 
 [dev-packages]
 pylint = "*"
