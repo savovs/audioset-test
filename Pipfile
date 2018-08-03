@@ -13,6 +13,7 @@ matplotlib = "*"
 pysoundfile = "*"
 sklearn = "*"
 pillow = "*"
+opencv-python = "*"
 
 [dev-packages]
 pylint = "*"
